@@ -84,6 +84,15 @@ class _TarefasViewState extends State<TarefasView> {
     }
   }
 
+  Future<void> _fazerCheckIn(int tarefaId, bool feito) async {
+    if (!feito) {
+      await _tarefasController.fazerCheckIn(tarefaId);
+    } else {
+      await _tarefasController.desfazerCheckIn(tarefaId);
+    }
+    _carregarTarefas();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,11 +103,9 @@ class _TarefasViewState extends State<TarefasView> {
           DropdownButton<String>(
             value: currentFilter,
             items: const [
-              DropdownMenuItem(value: 'peito ', child: Text('Peito')),
-              DropdownMenuItem(value: 'costas', child: Text('Costas')),
-              DropdownMenuItem(value: 'perna', child: Text('Perna')),
-              DropdownMenuItem(value: 'ombro', child: Text('Ombro')),
-              DropdownMenuItem(value: 'braço', child: Text('Braço'))
+              DropdownMenuItem(value: 'todas', child: Text('Todas')),
+              DropdownMenuItem(value: 'feitas', child: Text('Feitas')),
+              DropdownMenuItem(value: 'não feitas', child: Text('Não Feitas')),
             ],
             onChanged: (value) {
               // Atualiza o estado de filtro e recarrega as tarefas
@@ -154,7 +161,7 @@ class _TarefasViewState extends State<TarefasView> {
                           tarefa['feito'] == 1 ? Icons.check_box : Icons.check_box_outline_blank,
                         ),
                         onPressed: () {
-                          _atualizarTarefa(tarefa['id'], tarefa['feito'] == 0);
+                          _fazerCheckIn(tarefa['id'], tarefa['feito'] == 1);
                         },
                       ),
                       IconButton(

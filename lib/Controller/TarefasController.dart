@@ -1,4 +1,5 @@
-import 'DataBaseController.dart';
+
+import 'package:sa3/Controller/DataBaseController.dart';
 
 class TarefasController {
   final DatabaseHelper _dbHelper = DatabaseHelper();
@@ -16,6 +17,16 @@ class TarefasController {
     } else {
       return todasAsTarefas;
     }
+  }
+
+  // Faz check-in em uma tarefa, marcando-a como concluída
+  Future<void> fazerCheckIn(int tarefaId) async {
+    await _dbHelper.updateTarefa(tarefaId, true);
+  }
+
+  // Desfaz o check-in em uma tarefa, marcando-a como não concluída
+  Future<void> desfazerCheckIn(int tarefaId) async {
+    await _dbHelper.updateTarefa(tarefaId, false);
   }
 
   // Adiciona uma nova tarefa ao banco de dados
